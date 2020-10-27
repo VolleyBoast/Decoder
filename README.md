@@ -1,2 +1,2 @@
 # Decoder
-Javascript function to decode VolleyBoast's custom payload
+Javascript functions to decode VolleyBoast's custom payloads
