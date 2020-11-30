@@ -10,4 +10,5 @@ function Decoder(bytes, port) {
             decoded.Modbus3 = bytes[6] << 8 | bytes[5]; // Modbus-RS485 (16-bit)
             decoded.Modbus4 = bytes[8] << 8 | bytes[7]; // Modbus-RS485 (16-bit)
             decoded.CRC8 = bytes[10]; // CRC (8-bit)
-            return decoded
+            return decoded;
+        }
