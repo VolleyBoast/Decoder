@@ -8,7 +8,7 @@ function Decoder(bytes, port) {
 			decoded.BatteryLevel = (((bytes[0] & 0xf0) >> 4) | (bytes[1] << 4)) * 4; // ADC battery (12-bit)
 			decoded.Modbus1 = bytes[3] << 8 | bytes[2]; // Modbus-RS485 (16-bit)
 			decoded.Modbus2 = bytes[5] << 8 | bytes[4]; // Modbus-RS485 (16-bit)
-			decoded.Modbus3 = bytes[7] << 24 | bytes[6] << 16 | bytes[9] << 8 | bytes[8]; // Modbus-RS485 (32-bit)
+			decoded.Modbus3 = (bytes[7] << 24 | bytes[6] << 16 | bytes[9] << 8 | bytes[8]) >>> 0; // Modbus-RS485 (32-bit)
             decoded.CRC8 = bytes[10]; // CRC (8-bit)
             return decoded;
 }
