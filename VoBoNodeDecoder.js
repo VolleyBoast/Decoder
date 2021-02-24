@@ -9,8 +9,12 @@ function Decoder(bytes, port) {
             decoded.ADC2 = (bytes[3] & 0x0f) << 8 | bytes[2]; // ADC 2 (12-bit)
             decoded.ADC3 = ((bytes[3] & 0xf0) >> 4) | (bytes[4] << 4); // ADC 3 (12-bit)
             decoded.Battery = ((bytes[6] & 0x0f) << 8 | bytes[5]) * 4; // ADC battery (12-bit)
-            decoded.Temperature = ((((bytes[6] & 0xf0) >> 4) | (bytes[7] << 4)) * 0.125 * 9) / 5 + 32; // ADC temperature (12-bit)
+            if ((bytes[7] >> 7 & 0x01) == 0) {
+            decoded.Temperature = (((bytes[6] & 0xf0) >> 4) | (bytes[7] << 4)) * 0.125; // ADC temperature (12-bit) above 0 degrees C
+            } else {
+            decoded.Temperature = (4096 - (((bytes[6] & 0xf0) >> 4) | (bytes[7] << 4))) * 0.125 * (-1); // ADC temperature (12-bit) below 0 degrees C
+            }
             decoded.Modbus = bytes[9] << 8 | bytes[8]; // Modbus-RS485 (16-bit)
-            decoded.CRC8 = bytes[10]; // CRC (8-bit)
+            decoded.CRC8 = bytes[10]; // CRC-8/MAXIM (8-bit)
             return decoded;
         }
