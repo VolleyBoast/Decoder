@@ -3,7 +3,7 @@ const Payloads = {"Standard": 0, "Modbus": 1};
 function Decoder(bytes, port, fport) 
 {
     var payloadType = fport & 0x03;
-    var payloadIndex = (fport >> 2) & 0x2f;
+    var payloadIndex = (fport >> 2) & 0x3f;
     var decoded = {};
     if (payloadIndex == 0) 
     {
