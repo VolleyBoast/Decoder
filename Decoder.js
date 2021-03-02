@@ -1,4 +1,4 @@
-const Payloads = {"Standard": 0, "Modbus": 1};
+const Payloads = {"Standard": 1, "Modbus": 2};
 
 function Decoder(bytes, port, fport) 
 {
