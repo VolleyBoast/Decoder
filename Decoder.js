@@ -1,4 +1,4 @@
-function Decoder(bytes, port, fport) {
+function Decoder(bytes, fport) {
     if (fport == 1) {
         return parseStandardPayload(bytes);
     } 
