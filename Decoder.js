@@ -3,7 +3,7 @@ function Decoder(bytes, fport) {
         return parseStandardPayload(bytes);
     } 
     if (fport > 1) {
-        return parseModbusOnlyPayload(bytes);
+        return parseModbusOnlyPayload(bytes, fport);
     } 
 }
 
@@ -23,17 +23,18 @@ function parseStandardPayload(bytes)
     } else {
         decoded.Temperature = (4096 - (((bytes[6] & 0xf0) >> 4) | (bytes[7] << 4))) * 0.125 * (-1); // ADC temperature (12-bit) below 0 degrees C
     }
-    decoded.Modbus = bytes[9] << 8 | bytes[8]; // Modbus-RS485 (16-bit)
+    decoded.Modbus1 = bytes[9] << 8 | bytes[8]; // Modbus-RS485 (16-bit)
     return decoded;
 }
 
-function parseModbusOnlyPayload(bytes, decoded)
+function parseModbusOnlyPayload(bytes, fport)
 {
+    var startIdx = (fport - 1) * 5 - 4 + 1;
     var decoded = {};
-    decoded.Modbus1 = bytes[1] << 8 | bytes[0]; // Modbus-RS485 (16-bit)
-    decoded.Modbus2 = bytes[3] << 8 | bytes[2]; // Modbus-RS485 (16-bit)
-    decoded.Modbus3 = bytes[5] << 8 | bytes[4]; // Modbus-RS485 (16-bit)
-    decoded.Modbus4 = bytes[7] << 8 | bytes[6]; // Modbus-RS485 (16-bit)
-    decoded.Modbus5 = bytes[9] << 8 | bytes[8]; // Modbus-RS485 (16-bit)
+    decoded["Modbus"+startIdx++] = bytes[1] << 8 | bytes[0]; // Modbus-RS485 (16-bit)
+    decoded["Modbus"+startIdx++] = bytes[3] << 8 | bytes[2]; // Modbus-RS485 (16-bit)
+    decoded["Modbus"+startIdx++] = bytes[5] << 8 | bytes[4]; // Modbus-RS485 (16-bit)
+    decoded["Modbus"+startIdx++] = bytes[7] << 8 | bytes[6]; // Modbus-RS485 (16-bit)
+    decoded["Modbus"+startIdx]   = bytes[9] << 8 | bytes[8]; // Modbus-RS485 (16-bit)
     return decoded;
 }
